@@ -17,9 +17,7 @@ SELECT p.NOM , p.BUDJET , c.Nom FROM PROJET p , AFF a ,CHERCHEUR c WHERE p.NP=a.
 SELECT NOM FROM CHERCHEUR  WHERE NC NOT IN (SELECT AFF.NC FROM AFF);
 
 #7. Lister les noms de toutes les équipes et le nombre de projets qui lui appartiennent (indiquer 0 si l’équipe ne gère aucun projet)
-
-# ------ A REFAIRE !!!! -------
-SELECT e.NOM , COUNT(e.NOM) FROM EQUIPE e LEFT JOIN PROJET P on e.NE = P.NE;
+SELECT distinct e.NOM, COUNT(P.NOM) FROM EQUIPE e JOIN PROJET P on e.NE = P.NE GROUP BY e.NOM;
 
 #8. Lister tous les noms des projets, leurs budgets ainsi que le nombre de chercheurs qui leurs sont affectés#. Les projets auxquels n’est affecté aucun chercheur seront affichés avec 0 chercheurs.
 #9. Lister les noms des projets auxquels sont affectés au moins 2 chercheurs.
