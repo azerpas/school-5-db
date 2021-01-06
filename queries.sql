@@ -17,13 +17,23 @@ SELECT p.NOM , p.BUDJET , c.Nom FROM PROJET p , AFF a ,CHERCHEUR c WHERE p.NP=a.
 SELECT NOM FROM CHERCHEUR  WHERE NC NOT IN (SELECT AFF.NC FROM AFF);
 
 #7. Lister les noms de toutes les équipes et le nombre de projets qui lui appartiennent (indiquer 0 si l’équipe ne gère aucun projet)
-SELECT distinct e.NOM, COUNT(P.NOM) FROM EQUIPE e JOIN PROJET P on e.NE = P.NE GROUP BY e.NOM;
+SELECT  distinct e.NOM, COUNT(P.NOM) FROM EQUIPE e LEFT JOIN PROJET P on e.NE = P.NE GROUP BY e.NOM;
 
 #8. Lister tous les noms des projets, leurs budgets ainsi que le nombre de chercheurs qui leurs sont affectés#. Les projets auxquels n’est affecté aucun chercheur seront affichés avec 0 chercheurs.
+
 #9. Lister les noms des projets auxquels sont affectés au moins 2 chercheurs.
+SELECT c.NOM , PRENOM , COUNT(P.NOM) FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP GROUP BY c.NOM HAVING COUNT(P.NOM) >= 2;
+
 #10. Lister les noms et prénoms des chercheurs qui ont participé à plus de 4 projets.
+SELECT c.NOM , PRENOM , COUNT(P.NOM) FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP GROUP BY c.NOM HAVING COUNT(P.NOM) > 4;
+
 #11. Lister les noms et prénoms des chercheurs qui ont participé à plus de 2 projets durant une année et dont le budget du projet est supérieur à 30k euros
+SELECT distinct c.NOM , PRENOM  FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP AND BUDJET > 30000 GROUP BY ANNEE HAVING COUNT(P.NOM) >= 2;
+
 #12. Lister les chercheurs qui ont participé à un projet dont « M. VIEIRA » a participé en 2018.
+SELECT distinct c.NOM , PRENOM  FROM CHERCHEUR c , AFF a WHERE c.NC = a.NC AND UPPER(NOM) NOT LIKE 'VIEIRA' AND a.NP IN (
+    SELECT NP FROM AFF a , CHERCHEUR c  WHERE a.NC = c.NC AND UPPER(c.NOM) LIKE 'VIEIRA' AND a.ANNEE = 2018);
+
 #13. Lister les chercheurs qui ont participé à tous les projets de leur équipe.
 #14. Lister les noms et prénoms des chercheurs qui ont participé au plus grand nombre de projets.
 #15. Lister les projets dont le budget est supérieur à tous les budgets des projets de l’année 2018.
