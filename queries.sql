@@ -20,12 +20,17 @@ SELECT NOM FROM CHERCHEUR  WHERE NC NOT IN (SELECT AFF.NC FROM AFF);
 SELECT  distinct e.NOM, COUNT(P.NOM) FROM EQUIPE e LEFT JOIN PROJET P on e.NE = P.NE GROUP BY e.NOM;
 
 #8. Lister tous les noms des projets, leurs budgets ainsi que le nombre de chercheurs qui leurs sont affectés#. Les projets auxquels n’est affecté aucun chercheur seront affichés avec 0 chercheurs.
+SELECT distinct P.NOM, P.BUDJET , COUNT(C.NOM) FROM PROJET P
+    JOIN EQUIPE E on P.NE = E.NE
+    JOIN CHERCHEUR C on E.NE = C.NE GROUP BY E.NOM, P.NOM, P.BUDJET;
 
 #9. Lister les noms des projets auxquels sont affectés au moins 2 chercheurs.
-SELECT c.NOM , PRENOM , COUNT(P.NOM) FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP GROUP BY c.NOM HAVING COUNT(P.NOM) >= 2;
+SELECT distinct P.NOM FROM PROJET P
+    JOIN EQUIPE E on P.NE = E.NE
+    JOIN CHERCHEUR C on E.NE = C.NE GROUP BY E.NOM, P.NOM, P.BUDJET HAVING count(C.NOM) > 2;
 
 #10. Lister les noms et prénoms des chercheurs qui ont participé à plus de 4 projets.
-SELECT c.NOM , PRENOM , COUNT(P.NOM) FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP GROUP BY c.NOM HAVING COUNT(P.NOM) > 4;
+SELECT c.NOM , PRENOM FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP GROUP BY c.NOM HAVING COUNT(P.NOM) > 4;
 
 #11. Lister les noms et prénoms des chercheurs qui ont participé à plus de 2 projets durant une année et dont le budget du projet est supérieur à 30k euros
 SELECT distinct c.NOM , PRENOM  FROM CHERCHEUR c , PROJET P , AFF a WHERE c.NC = a.NC AND a.NP = p.NP AND BUDJET > 30000 GROUP BY ANNEE HAVING COUNT(P.NOM) >= 2;
