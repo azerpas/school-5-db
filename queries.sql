@@ -1,10 +1,13 @@
 #1. Liste de tous les numéros, noms et prénoms des chercheurs, classée par ordre alphabétique sur le nom.
-SELECT NC, ASC(NOM), PRENOM FROM CHERCHEUR;
+SELECT NC, NOM, PRENOM FROM CHERCHEUR ORDER BY NOM;
 #2. Liste de tous les budgets triés par ordre décroissant et sans doublons.
 SELECT DISTINCT BUDJET FROM PROJET ORDER BY BUDJET DESC;
 #3. Liste de tous les projets dont le budget est entre 400000 et 900000 euros.
+SELECT NOM , BUDJET FROM PROJET WHERE BUDJET BETWEEN 400000 AND 900000;
 #4. Liste des chercheurs en précisant pour chacun le nom de l’équipe à laquelle il appartient.
+SELECT c.NOM "NOM" , c.PRENOM , e.NOM "Nom de l'equipe" FROM CHERCHEUR c , EQUIPE e WHERE c.NE = e.NE;
 #5. Lister tous les noms des projets, leurs budgets ainsi que les noms des chercheurs qui leur sont affectés.
+SELECT p.NOM , p.BUDJET , c.Nom FROM PROJET p , AFF a ,CHERCHEUR c WHERE p.NP=a.NP AND a.NC=c.NC;
 #6. Lister les noms et prénoms des chercheurs qui n’ont participé à aucun projet
 #7. Lister les noms de toutes les équipes et le nombre de projets qui lui appartiennent (indiquer 0 si l’équipe ne gère aucun projet)
 #8. Lister tous les noms des projets, leurs budgets ainsi que le nombre de chercheurs qui leurs sont affectés#. Les projets auxquels n’est affecté aucun chercheur seront affichés avec 0 chercheurs.
