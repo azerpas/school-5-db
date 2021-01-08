@@ -64,10 +64,18 @@ SELECT distinct e.NOM  FROM EQUIPE e JOIN PROJET P on e.NE = P.NE JOIN AFF A on 
 
 #19. Donner les noms et le nombre de chercheurs y participant des projets qui ont le plus grand budget.
 SELECT p.NOM  "Nom du projet", COUNT(a.NC) "Nombre de chercheur" FROM PROJET p JOIN AFF A on p.NP = A.NP HAVING MAX(BUDJET);
+
 #20. Lister par année le nombre de chercheurs affectés à des projets entre les années 2011 et 2021.
 SELECT COUNT(distinct C.NC), ANNEE FROM CHERCHEUR C NATURAL JOIN AFF A WHERE ANNEE > 2011 AND ANNEE < 2021 GROUP BY ANNEE;
+
 #21. Lister les noms et prénoms des chercheurs qui ont participés dans les projets de 2 équipes différentes.
+# ?
 #22. Lister les noms et prénoms des chercheurs qui ne participent que dans le projet « Pacific-Clouds avec CAPES – Bresil ».
+SELECT C.NOM, PRENOM FROM CHERCHEUR C, PROJET P, AFF A
+    WHERE C.NC = A.NC AND P.NP = A.NP
+      AND P.NOM = 'Pacific-Clouds avec CAPES - Bresil'
+    GROUP BY C.NOM, PRENOM
+    HAVING COUNT(P.NP) = 1;
 #23. Lister les projets auxquels sont affectés les chercheurs « BOUGUEROUA » et « WOLSKA »
 SELECT distinct p.NOM FROM PROJET p JOIN AFF A on p.NP = A.NP JOIN CHERCHEUR C on A.NC = C.NC WHERE UPPER(C.NOM) IN ('BOUGUEROUA','WOLSKA');
 
