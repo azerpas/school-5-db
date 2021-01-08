@@ -68,7 +68,8 @@ SELECT p.NOM  "Nom du projet", COUNT(a.NC) "Nombre de chercheur" FROM PROJET p J
 SELECT COUNT(distinct C.NC), ANNEE FROM CHERCHEUR C NATURAL JOIN AFF A WHERE ANNEE > 2011 AND ANNEE < 2021 GROUP BY ANNEE;
 
 #21. Lister les noms et prénoms des chercheurs qui ont participés dans les projets de 2 équipes différentes.
-# ?
+SELECT C.NOM , PRENOM FROM CHERCHEUR C JOIN AFF A on C.NC = A.NC JOIN PROJET P on P.NP = A.NP GROUP BY C.NOM , PRENOM HAVING COUNT(P.NE) > 2;
+
 #22. Lister les noms et prénoms des chercheurs qui ne participent que dans le projet « Pacific-Clouds avec CAPES – Bresil ».
 SELECT C.NOM, PRENOM FROM CHERCHEUR C, PROJET P, AFF A
     WHERE C.NC = A.NC AND P.NP = A.NP
