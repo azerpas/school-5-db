@@ -41,7 +41,7 @@ SELECT distinct c.NOM , PRENOM  FROM CHERCHEUR c , AFF a WHERE c.NC = a.NC AND U
     SELECT NP FROM AFF a , CHERCHEUR c  WHERE a.NC = c.NC AND UPPER(c.NOM) LIKE 'VIEIRA' AND a.ANNEE = 2018);
 
 #13. Lister les chercheurs qui ont participé à tous les projets de leur équipe.
-SELECT distinct C.NOM , PRENOM FROM CHERCHEUR C JOIN AFF A on C.NC = A.NC JOIN PROJET P on P.NP = A.NP WHERE C.NE = ALL (SELECT NE FROM CHERCHEUR C2 WHERE C2.NC = C.NC)
+SELECT distinct C.NOM , PRENOM FROM CHERCHEUR C JOIN AFF A on C.NC = A.NC JOIN PROJET P on P.NP = A.NP WHERE C.NE = ALL (SELECT NE FROM CHERCHEUR C2 WHERE C2.NC = C.NC);
 
 #14. Lister les noms et prénoms des chercheurs qui ont participé au plus grand nombre de projets.
 SELECT NombrePrj.NOM , NombrePrj.PRENOM
@@ -83,7 +83,10 @@ SELECT distinct p.NOM FROM PROJET p JOIN AFF A on p.NP = A.NP JOIN CHERCHEUR C o
 
 #24. Lister les projets auxquels ne sont affectés ni « BOUGUEROUA », ni « WOLSKA »
 SELECT NOM FROM PROJET WHERE NP NOT IN (SELECT A.NP FROM  AFF A JOIN CHERCHEUR C on A.NC = C.NC WHERE UPPER(C.NOM) IN ('BOUGUEROUA','WOLSKA'));
+
 #25. Lister les noms des équipes triées selon le nombre de chercheurs lui appartenant, par ordre croissant, et par la moyenne de leurs budgets par ordre décroissant.
+SELECT E.NOM, SUM(C.NC), AVG(P.BUDJET) FROM EQUIPE E, CHERCHEUR C, PROJET P WHERE P.NE = E.NE AND E.NE=C.NC GROUP BY E.NE ORDER BY 2,3;
+
 #26. Lister les noms de duo de chercheurs qui participent le plus sur des projets communs ensemble.
 
 #27. Lister les noms de projets dont le budget est de plus de 30K et auxquels sont affectés au moins un chercheur par équipe.
