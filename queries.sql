@@ -53,7 +53,7 @@ SELECT * FROM PROJET WHERE BUDJET > ALL (SELECT BUDJET FROM PROJET NATURAL JOIN 
 # Aucun résultat car le budget le + élevé de l'année 2018 est aussi le + élevé toutes années confondues (projet: p08)
 
 #16. Lister les projets dont le budget est supérieur à un budget quelconque de l’année 2018.
-SELECT NOM , BUDJET FROM PROJET WHERE BUDJET > ANY (SELECT distinct BUDJET FROM PROJET RIGHT JOIN AFF A on PROJET.NP = A.NP WHERE ANNEE = '2018' )
+SELECT NOM , BUDJET FROM PROJET WHERE BUDJET > ANY (SELECT distinct BUDJET FROM PROJET RIGHT JOIN AFF A on PROJET.NP = A.NP WHERE ANNEE = '2018' );
 
 #17. Lister les équipes qui ont au moins un projet auquel a participé plus de 2 chercheurs.
 SELECT NOM FROM EQUIPE WHERE NE IN ( SELECT e.NE FROM EQUIPE e JOIN PROJET P on e.NE = P.NE JOIN AFF A on p.NP = A.NP HAVING COUNT(a.NC) > 2);
@@ -64,7 +64,6 @@ SELECT distinct e.NOM  FROM EQUIPE e JOIN PROJET P on e.NE = P.NE JOIN AFF A on 
 
 #19. Donner les noms et le nombre de chercheurs y participant des projets qui ont le plus grand budget.
 SELECT p.NOM  "Nom du projet", COUNT(a.NC) "Nombre de chercheur" FROM PROJET p JOIN AFF A on p.NP = A.NP HAVING MAX(BUDJET);
-
 #20. Lister par année le nombre de chercheurs affectés à des projets entre les années 2011 et 2021.
 SELECT COUNT(distinct C.NC), ANNEE FROM CHERCHEUR C NATURAL JOIN AFF A WHERE ANNEE > 2011 AND ANNEE < 2021 GROUP BY ANNEE;
 
@@ -86,6 +85,8 @@ SELECT NOM FROM PROJET WHERE NP NOT IN (SELECT A.NP FROM  AFF A JOIN CHERCHEUR C
 #27. Lister les noms de projets dont le budget est de plus de 30K et auxquels sont affectés au moins un chercheur par équipe.
 SELECT P.NOM FROM PROJET P JOIN EQUIPE E on E.NE = P.NE JOIN AFF A on P.NP = A.NP WHERE BUDJET > 30000 HAVING COUNT(A.NC) > 1;
 #28. Lister tous les chercheurs ayant participé à des projets entre 2011 et 2018 ainsi les noms des projets et leurs budgets.
-SELECT CHERCHEUR.NOM , P.BUDJET , P.NOM FROM CHERCHEUR JOIN AFF A on CHERCHEUR.NC = A.NC JOIN PROJET P on A.NP = P.NP WHERE ANNEE BETWEEN '2011' AND '2018'
+SELECT CHERCHEUR.NOM , P.BUDJET , P.NOM FROM CHERCHEUR JOIN AFF A on CHERCHEUR.NC = A.NC JOIN PROJET P on A.NP = P.NP WHERE ANNEE BETWEEN '2011' AND '2018';
+
 #29. Utiliser la requête précédente pour lister les noms et prénoms des chercheurs ayant participé à des projets entre 2011 et 2018 ainsi que le nombre de ces projets et le total de leurs budgets.
 #30. Donner les noms et prénoms des chercheurs qui ont participé à tous ls projets de l’année 2018.
+SELECT NOM , PRENOM  FROM CHERCHEUR NATURAL JOIN AFF A WHERE NP = all (SELECT distinct NP FROM AFF A2 WHERE A2.ANNEE = '2018');
