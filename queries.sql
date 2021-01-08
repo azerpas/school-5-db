@@ -49,7 +49,8 @@ FROM (  SELECT NOM , PRENOM,  COUNT(NP) mycount
     as NombrePrj HAVING MAX(NombrePrj.mycount);
 
 #15. Lister les projets dont le budget est supérieur à tous les budgets des projets de l’année 2018.
-SELECT NOM , BUDJET FROM PROJET WHERE BUDJET >= ALL (SELECT distinct BUDJET FROM PROJET RIGHT JOIN AFF A on PROJET.NP = A.NP WHERE ANNEE = '2018' )
+SELECT * FROM PROJET WHERE BUDJET > ALL (SELECT BUDJET FROM PROJET NATURAL JOIN AFF A WHERE A.ANNEE = 2018);
+# Aucun résultat car le budget le + élevé de l'année 2018 est aussi le + élevé toutes années confondues (projet: p08)
 
 #16. Lister les projets dont le budget est supérieur à un budget quelconque de l’année 2018.
 SELECT NOM , BUDJET FROM PROJET WHERE BUDJET > ANY (SELECT distinct BUDJET FROM PROJET RIGHT JOIN AFF A on PROJET.NP = A.NP WHERE ANNEE = '2018' )
@@ -64,6 +65,7 @@ SELECT distinct e.NOM  FROM EQUIPE e JOIN PROJET P on e.NE = P.NE JOIN AFF A on 
 #19. Donner les noms et le nombre de chercheurs y participant des projets qui ont le plus grand budget.
 SELECT p.NOM  "Nom du projet", COUNT(a.NC) "Nombre de chercheur" FROM PROJET p JOIN AFF A on p.NP = A.NP HAVING MAX(BUDJET);
 #20. Lister par année le nombre de chercheurs affectés à des projets entre les années 2011 et 2021.
+SELECT COUNT(distinct C.NC), ANNEE FROM CHERCHEUR C NATURAL JOIN AFF A WHERE ANNEE > 2011 AND ANNEE < 2021 GROUP BY ANNEE;
 #21. Lister les noms et prénoms des chercheurs qui ont participés dans les projets de 2 équipes différentes.
 #22. Lister les noms et prénoms des chercheurs qui ne participent que dans le projet « Pacific-Clouds avec CAPES – Bresil ».
 #23. Lister les projets auxquels sont affectés les chercheurs « BOUGUEROUA » et « WOLSKA »
