@@ -41,6 +41,8 @@ SELECT distinct c.NOM , PRENOM  FROM CHERCHEUR c , AFF a WHERE c.NC = a.NC AND U
     SELECT NP FROM AFF a , CHERCHEUR c  WHERE a.NC = c.NC AND UPPER(c.NOM) LIKE 'VIEIRA' AND a.ANNEE = 2018);
 
 #13. Lister les chercheurs qui ont participé à tous les projets de leur équipe.
+SELECT distinct C.NOM , PRENOM FROM CHERCHEUR C JOIN AFF A on C.NC = A.NC JOIN PROJET P on P.NP = A.NP WHERE C.NE = ALL (SELECT NE FROM CHERCHEUR C2 WHERE C2.NC = C.NC)
+
 #14. Lister les noms et prénoms des chercheurs qui ont participé au plus grand nombre de projets.
 SELECT NombrePrj.NOM , NombrePrj.PRENOM
 FROM (  SELECT NOM , PRENOM,  COUNT(NP) mycount
