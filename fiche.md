@@ -81,3 +81,33 @@ Union, Intersection, Différence, Sélection, Projection, Produit Cartésien, Di
 ## QCM vrac
 
 - Set bag n'admet pas de doublons
+
+## Astuces
+
+- ne sont affectés ni « BOUGUEROUA », ni « WOLSKA »
+
+```sql
+SELECT projet.NP
+FROM projet
+    WHERE not exists (SELECT * FROM aff, chercheur
+        WHERE aff.NP=projet.np and aff.NC=chercheur.NC and chercheur.nom in ('BOUGUEROUA' ,'WOLSKA')
+    );
+```
+
+- BUDGET est supérieur à un BUDGET quelconque de l’année #2018.
+
+````sql
+ SELECT NOM FROM projet
+    WHERE BUDGET > ANY (
+        SELECT DISTINCT BUDGET FROM projet NATURAL JOIN aff WHERE annee=2018
+    );
+````
+
+- qui ont participé à tous les projets de leur équipe.
+
+```sql
+ SELECT NC, Nom FROM chercheur c
+    WHERE NOT EXISTS (SELECT NP FROM projet p
+        where p.ne=c.ne AND not exists (SELECT * from aff a
+            where a.NP=p.np and a.nc=c.nc));
+```
